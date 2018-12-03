@@ -1,4 +1,4 @@
-function c_P = CalculatePowerCoefficient(lambda, theta)
+function C_P = CalculatePowerCoefficient(lambda, theta)
 
 x = rad2deg(theta);
 y = lambda;
@@ -18,6 +18,6 @@ y = lambda;
        p04 =  -4.366e-05;  %(-4.671e-05, -4.061e-05)
 
 
-c_P = p00 + p10*x + p01*y + p20*x^2 + p11*x*y + p02*y^2 + p21*x^2*y + p12*x*y^2 + p03*y^3 + p22*x^2*y^2 + p13*x*y^3 + p04*y^4;
+C_P = p00 + p10*x + p01*y + p20*x^2 + p11*x*y + p02*y^2 + p21*x^2*y + p12*x*y^2 + p03*y^3 + p22*x^2*y^2 + p13*x*y^3 + p04*y^4;
 
 end

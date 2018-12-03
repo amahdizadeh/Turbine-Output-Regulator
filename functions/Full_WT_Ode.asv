@@ -1,0 +1,41 @@
+function dx = Full_WT_Ode(t,x,u,Parameter,Disturbance)
+%% Full nonlinear model of the turbine + controller
+
+% disturbance = info.dist;
+% R = info.setpoint;
+% F = info.controller;
+
+
+% local variables ---------------------------------------------------------
+TBN         = Parameter.Turbine;
+v_wind      = 15;
+
+%  M_g_dot     = u(1);
+ theta_c     = u(2);
+
+
+
+
+x_T         = x(1);          	% Tower displacement 
+x_T_dot     = x(2);            	% Tower displacement speed
+Omega       = x(3);          	% Hub's rotational speed 
+theta       = x(4);           	% Pitch Angle
+theta_dot   = x(5);           	% Pitch Angle rate
+M_g         = 2e4;             % generator torque
+% -------------------------------------------------------------------------
+
+% Aerodynamics
+M_a         = CalculateAerodynamicTorque(x_T_dot,Omega,theta,v_wind,Parameter);
+F_a         = CalculateAerodynamicThrust(x_T_dot,Omega,theta,v_wind,Parameter);
+
+%% Equations
+dx          = zeros(5,1);    % a column vector
+%--
+dx(1)       = x_T_dot;
+dx(2)       = 1/TBN.m_Te    * ( F_a - TBN.c_Te*x_T_dot - TBN.k_Te*x_T);
+dx(3)       = 1/TBN.J       * ( M_a - M_g/TBN.i);
+dx(4)       = theta_dot;
+dx(5)       = - 2* TBN.xi * TBN.omega * theta_dot - (theta - theta_c) * TBN.omega^2 ;
+
+
+end
